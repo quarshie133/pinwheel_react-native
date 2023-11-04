@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,17 +13,16 @@ export default function App() {
   return (
     <GestureHandlerRootView style={{flex: 1}}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{
+          headerShown: false,
+        }}>
           <Stack.Screen name="Home" component={Home} />
           <Stack.Screen
             name="Lobster"
             component={Lobster}
-            options={{
-              // headerTitle: "",
-              headerShown: false,
-            }}
           />
         </Stack.Navigator>
+        {/* <StatusBar style="auto"/> */}
       </NavigationContainer>
     </GestureHandlerRootView>
   );
