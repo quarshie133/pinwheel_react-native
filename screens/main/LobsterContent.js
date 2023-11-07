@@ -4,19 +4,64 @@ import {
   Text,
   View,
   Image,
-  ScrollView,
-  useWindowDimensions,
-  Pressable,
   TouchableOpacity,
+  useWindowDimensions,
+  FlatList,
 } from "react-native";
+import { ScrollView } from "react-native-virtualized-view";
 
-// import { NativeBaseProvider, ScrollView } from "native-base";
-
-import star from "../../assets/star.png";
-import { IMAGES } from "../../constants/data";
 import Ionicons from "@expo/vector-icons/Ionicons";
 //Fonts
 import { useFonts } from "expo-font";
+
+import lobster_1 from "../../assets/lobster-1.png";
+import lobster_2 from "../../assets/lobster-2.png";
+import lobster_3 from "../../assets/lobster-3.png";
+
+const IMAGES = [
+  {
+    id: 1,
+    image: lobster_1,
+  },
+  {
+    id: 2,
+    image: lobster_2,
+  },
+  {
+    id: 3,
+    image: lobster_3,
+  },
+
+  {
+    id: 4,
+    image: lobster_1,
+  },
+
+  {
+    id: 5,
+    image: lobster_2,
+  },
+
+  {
+    id: 6,
+    image: lobster_3,
+  },
+];
+
+function ListImage({ image, id }) {
+  return (
+    <View style={{ flex: 1 }}>
+      <Image
+        style={{
+          borderRadius: 8,
+          aspectRatio: 1,
+        }}
+        source={image}
+        key={id}
+      />
+    </View>
+  );
+}
 
 function LobsterContent() {
   const [count, setCount] = useState(0);
@@ -25,7 +70,8 @@ function LobsterContent() {
 
   let [fontsLoading] = useFonts({
     Montserrat: require("../../assets/fonts/Montserrat-Regular.ttf"),
-    KumbhSans: require("../../assets/fonts/KumbhSans-Medium.ttf"),
+    Monts_Black: require("../../assets/fonts/Montserrat-Bold.ttf"),
+    KumbhSans: require("../../assets/fonts/KumbhSans-ExtraBold.ttf"),
   });
 
   if (!fontsLoading) {
@@ -34,153 +80,158 @@ function LobsterContent() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Lobster</Text>
-      <View style={styles.lobItems}>
-        <Image source={star} />
-        <Text
-          style={{
-            color: "#000",
-            fontFamily: "Montserrat",
-            fontSize: 14,
-            fontWeight: "400",
-          }}
-        >
-          3.5
-        </Text>
-        <Ionicons
-          name="location"
-          size={18}
-          color="#2B65EC"
-          style={styles.location}
-        />
-      </View>
+      {/* Text Title Section */}
 
-      <Text style={styles.text}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Accumsan enim
-        adipiscing vbitant. Lorem ipsum dolor sit amet, consectetur adipiscing
-        elit. Accumsan enim adipiscing vbitant.
-      </Text>
-      <View>
+      <View style={styles.lobItems}>
         <Text
           style={{
-            color: "#2B65EC",
             fontFamily: "Montserrat",
-            fontSize: 18,
-            fontWeight: "700",
-            fontStyle: "normal",
-            marginLeft: 24,
+            fontSize: 17,
+            fontWeight: "600",
           }}
         >
-          GH₵00.00
+          Lobster
         </Text>
-        <View style={styles.itemPrice}>
-          <View style={styles.split}>
-            <Text
-              style={{
-                color: "#000",
-                fontFamily: "Montserrat",
-                fontSize: 13,
-                fontWeight: "500",
-                fontStyle: "normal",
-                marginTop: 4,
-              }}
-            >
-              per kg
-            </Text>
-            <Ionicons name="alert-circle" size={14} color="#ff0000" />
-          </View>
-          <View style={styles.split}>
-            <Ionicons
-              name="remove-circle-outline"
-              size={27}
-              style={{ color: "#2B65EC", marginRight: 8 }}
-              onPress={() => setCount(count - 1)}
-            />
-            <Text
-              style={{
-                color: "#000",
-                fontFamily: "Montserrat",
-                fontSize: 15,
-                fontWeight: "700",
-                fontStyle: "normal",
-                marginTop: 4,
-              }}
-            >
-              {count}
-            </Text>
-            <Ionicons
-              name="add-circle-sharp"
-              size={27}
-              style={{ color: "#2B65EC", marginLeft: 8 }}
-              onPress={() => setCount(count + 1)}
-            />
-          </View>
+        <View style={{ flexDirection: "row" }}>
+          <Ionicons name="star" size={18} color="#FFD233" />
+          <Text
+            style={{
+              fontFamily: "Montserrat",
+              fontSize: 15,
+              fontWeight: "600",
+            }}
+          >
+            3.5
+          </Text>
+        </View>
+        <View style={{ flex: 1, alignItems: "flex-end", right: 30 }}>
+          <Ionicons name="location-sharp" color="#2B65EC" size={18} />
+        </View>
+      </View>
+      {/* <View>
+        <Text style={styles.text}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Accumsan enim
+          adipiscing vbitant. Lorem ipsum dolor sit amet, consectetur adipiscing
+          elit. Accumsan enim adipiscing vbitant.
+        </Text>
+      </View> */}
+
+      {/* Price items */}
+      <View style={styles.itemPrice}>
+        <View style={[styles.split, styles.amountItems]}>
+          <Text
+            style={{
+              color: "#2B65EC",
+              fontFamily: "Montserrat",
+              fontSize: 18,
+              fontWeight: "600",
+            }}
+          >
+            GH₵00.00
+          </Text>
+        </View>
+        <View style={{ flexDirection: "row", alignSelf: "center" }}>
+          <Text
+            style={{
+              fontFamily: "Montserrat",
+              fontSize: 11,
+              fontWeight: "400",
+            }}
+          >
+            per kg
+          </Text>
+          <Ionicons name="alert-circle" color="#ff0000" size={13} />
         </View>
 
-        <Text
-          style={{
-            color: "#000",
-            fontFamily: "Montserrat",
-            fontSize: 12,
-            fontWeight: "400",
-            fontStyle: "normal",
-            marginLeft: 24,
-            marginBottom: 30,
-          }}
-        >
-          (Including delivery fee)
-        </Text>
+        <View style={[styles.split, styles.numItems]}>
+          <Ionicons
+            name="remove-circle-outline"
+            size={28}
+            color="#2B65EC"
+            onPress={() => setCount(count - 1)}
+          />
+          <Text
+            style={{
+              fontFamily: "Montserrat",
+              fontSize: 15,
+              fontWeight: "500",
+            }}
+          >
+            {count}
+          </Text>
+          <Ionicons
+            name="add-circle-sharp"
+            size={28}
+            color="#2B65EC"
+            onPress={() => setCount(count + 1)}
+          />
+        </View>
       </View>
+
       <Text
         style={{
-          color: "#000",
           fontFamily: "Montserrat",
-          fontSize: 14,
-          fontWeight: "500",
-          fontStyle: "normal",
-          marginLeft: 24,
+          fontSize: 13,
+          fontWeight: "400",
+          paddingLeft: 24,
+          marginBottom: 30,
         }}
       >
-        Have a look at your product
+        (Including delivery fee)
       </Text>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        bounces={false}
-        scrollEventThrottle={6}
-        decelerationRate="fast"
+      <View style={{ marginBottom: 15 }}>
+        <Text
+          style={{
+            fontFamily: "Montserrat",
+            fontSize: 16,
+            fontWeight: "500",
+            paddingLeft: 24,
+            // marginTop: -5
+          }}
+        >
+          Have a look at your product
+        </Text>
+      </View>
+      {/* Lobster Image FlatList Section */}
+      <View style={styles.layout}>
+        <ScrollView
+          horizontal={false}
+          showsHorizontalScrollIndicator={false}
+          bounces={false}
+          decelerationRate="fast"
+        >
+          <FlatList
+            style={styles.image}
+            horizontal
+            scrollEventThrottle={6}
+            bounces={false}
+            showsHorizontalScrollIndicator={false}
+            data={IMAGES}
+            renderItem={({ item }) => (
+              <ListImage image={item.image} style={styles.images} />
+            )}
+            keyExtractor={(item) => item.id}
+          />
+        </ScrollView>
+      </View>
+      <View
+        style={{
+          flex: 1,
+          paddingLeft: 24,
+          marginBottom: 30,
+          marginHorizontal: 5,
+          marginVertical: 5,
+        }}
       >
-        {IMAGES.map((img, index) => {
-          return (
-            <View style={{ width: SIZE }} key={index}>
-              <View style={styles.images}>
-                <Image source={img.image} style={styles.image} />
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
-      <View style={{ flex: 1 }}>
         <TouchableOpacity style={styles.btn}>
           <View>
             <Text
               style={{
-                // flex: 1,
-                width: 310,
-                height: 40,
-                fontFamily: "Montserrat",
-                fontSize: 20,
-                fontWeight: "500",
-                textAlign: "center",
-                textAlignVertical:"center",
-                marginHorizontal: 15,
-                marginVertical: 5,
-                borderRadius: 20,
                 color: "#fff",
-                backgroundColor: "#2B65EC",
-                justifyContent: "center",
-                alignItems: "center",
+                fontFamily: "Montserrat",
+                fontSize: 16,
+                fontWeight: "600",
               }}
             >
               Add to Order
@@ -193,11 +244,65 @@ function LobsterContent() {
 }
 
 const styles = StyleSheet.create({
+  // Title
+
   container: {
     flex: 1,
-    position: "absolute",
-    marginTop: 2,
+    marginTop: 14,
   },
+
+  lobItems: {
+    paddingLeft: 24,
+    flexDirection: "row",
+    gap: 10,
+    marginBottom: 25,
+  },
+
+  text: {
+    marginTop: "2%",
+    paddingLeft: 24,
+    fontFamily: "Montserrat",
+    fontSize: 14,
+    fontStyle: "normal",
+    fontWeight: "300",
+  },
+
+  itemPrice: {
+    marginTop: "3%",
+    paddingLeft: 24,
+    flexDirection: "row",
+  },
+
+  split: {
+    flexDirection: "row",
+  },
+
+  numItems: {
+    flex: 1,
+    justifyContent: "flex-end",
+    alignItems: "center",
+    right: 30,
+    gap: 5,
+  },
+
+  //lobster images flatlist
+
+  layout: {
+    flex: 1,
+    
+
+  },
+
+  image: {
+    borderRadius: 8,
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+  images: {
+    width: 99.614,
+    height: 108,
+  },
+
   title: {
     color: "#000",
     fontFamily: "Montserrat",
@@ -207,51 +312,17 @@ const styles = StyleSheet.create({
     marginLeft: 24,
     marginBottom: 9,
   },
-  lobItems: {
-    flex: 1,
-    flexDirection: "row",
-    columnGap: 3,
-    position: "absolute",
-    marginTop: 3,
-    marginLeft: 85,
-  },
-  location: {
-    marginLeft: 170,
-  },
-  text: {
-    width: 297,
-    fontFamily: "Montserrat",
-    fontSize: 13,
-    fontStyle: "normal",
-    fontWeight: "300",
-    marginLeft: 24,
-    marginBottom: 15,
-  },
-  itemPrice: {
-    flex: 1,
-    flexDirection: "row",
-    position: "absolute",
-  },
-  split: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end",
-    marginRight: 13,
-  },
-  images: {
-    // flex: 1,
-    borderRadius: 34,
-    // overflow: "hidden",
-  },
-  image: {
-    width: 90.614,
-    height: undefined,
-    aspectRatio: 1,
-    marginBottom: 5,
-    marginLeft: 15,
-  },
+
   btn: {
-    marginLeft: 15,
+    width: 310,
+    height: 55,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#2B65EC",
+    padding: 8,
+    borderRadius: 50,
+    borderWidth: 4,
+    borderColor: "#2B65EC",
   },
 });
 
